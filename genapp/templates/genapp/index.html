@@ -1,0 +1,16 @@
+<h1>Wybierz parametry</h1>
+
+<form action="{% url 'start' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="rangeA">Zakres: <</label>
+        <input type="text" class="form-control" name="rangeA" id="rangeA" aria-describedby="helpId" value="-4">
+        <label for="rangeB">,</label>
+        <input type="text" class="form-control" name="rangeB" id="rangeB" aria-describedby="helpId" value="12">>
+    </div>
+    <input type="submit" value="Generuj">
+</form>
+
+{% if rangeA and rangeB %}
+    Wybrany zakres {{rangeA}} i {{rangeB}}
+{% endif %}
