@@ -1,1 +1,3 @@
-pip install django-toolbelt
+django
+gunicorn
+django-heroku
