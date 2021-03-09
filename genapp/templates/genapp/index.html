@@ -1,16 +1,24 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <h1>Wybierz parametry</h1>
 
 <form action="{% url 'start' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
         <label for="rangeA">Zakres: <</label>
-        <input type="text" class="form-control" name="rangeA" id="rangeA" aria-describedby="helpId" value="-4">
+        <input type="number" name="rangeA" class="form-control rangeA" value="-4">
         <label for="rangeB">,</label>
-        <input type="text" class="form-control" name="rangeB" id="rangeB" aria-describedby="helpId" value="12">>
+        <input type="number" name="rangeB" class="form-control rangeB" value="12">><br>
+        <label for="precision">Precyzja</label>
+        <input type="number" name="precision" class="form-control precision" value="3"><br>
+        <label for="rel">Rel</label>
+        <input type="number" name="rel" class="form-control rel" value="-1.234">
     </div>
-    <input type="submit" value="Generuj">
+    <input type="button" class="submit" value="Generuj">
 </form>
 
-{% if rangeA and rangeB %}
-    Wybrany zakres {{rangeA}} i {{rangeB}}
-{% endif %}
+<p>rel: </p>
+<div class="rel-response"></div>
+
+{% load static %}
+<script src="{% static 'main.js' %}"></script>   
