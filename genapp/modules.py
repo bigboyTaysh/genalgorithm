@@ -24,6 +24,12 @@ def int_to_bin(integer, power):
 def int_to_real(integer, rangeA, rangeB, precision, power):
     return rangeA + ((rangeB - rangeA) * integer)/(pow(2, power)-1)
 
+def func(real, precision):
+    format_str = '%.' + str(precision) + 'f'
+    fraction, integer = math.modf(real)
+    fx = fraction * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
+    return format(format_str % fx)
+
 def get_individual(rangeA, rangeB, precision, power):
     real = random_real(rangeA, rangeB, precision)
     int_from_real = real_to_int(real, rangeA, rangeB, power)
@@ -36,7 +42,8 @@ def get_individual(rangeA, rangeB, precision, power):
         'int_from_real': int_from_real,
         'bin': binary,
         'int_from_bin': int_from_bin,
-        'real_from_int': real_from_int
+        'real_from_int': real_from_int,
+        'fx': func(real, precision)
     }
 
 def get_individual_array(rangeA, rangeB, precision, power, population):

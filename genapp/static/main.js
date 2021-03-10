@@ -33,6 +33,7 @@ function submit() {
                     "<td>" + result.bin + "</td>" + 
                     "<td>" + result.int_from_bin + "</td>" + 
                     "<td>" + result.real_from_int + "</td>" + 
+                    "<td>" + result.fx + "</td>" + 
                 "</tr>"
 
                 $(".results").append(html)
