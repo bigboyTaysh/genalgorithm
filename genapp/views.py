@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from genapp.modules import power_of_2, real_to_int, bin_to_int
+import genapp.modules
 from decimal import Decimal
 
 # Create your views here.
@@ -14,16 +14,16 @@ def index(request):
 
 def start(request):
     if request.is_ajax and request.method == "POST":
-        real = Decimal(request.POST['real'])
-        binary = Decimal(request.POST['bin'])
         rangeA = Decimal(request.POST['rangeA'])
         rangeB = Decimal(request.POST['rangeB'])
-        precision = Decimal(request.POST['precision'])
-        precision = Decimal(request.POST['precision'])
+        precision = int(request.POST['precision'])
+        population = int(request.POST['population'])
 
+        power = genapp.modules.power_of_2(rangeA, rangeB, precision)
+ 
         context = {
-            'power': power_of_2(rangeA, rangeB, precision),
-            'real': real_to_int(real, rangeA, rangeB, precision),
-            'bin': bin_to_int(binary)
+            'power': power,
+            'individuals': genapp.modules.get_individual_array(rangeA, rangeB, precision, power, population)
         }
+        
         return JsonResponse(context, status=200)

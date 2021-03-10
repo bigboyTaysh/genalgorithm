@@ -1,28 +1,68 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+{% load static %}
+<link href="{% static 'main.css' %}" rel="stylesheet"></script>
 
 <h1>Wybierz parametry</h1>
 
-<form action="{% url 'start' %}" method="post">
+<form action="{% url 'start' %}" method="post"> 
     {% csrf_token %}
-    <div class="form-group">
-        <label for="rangeA">Zakres: <</label>
-        <input type="number" name="rangeA" class="form-control rangeA" value="-4">
-        <label for="rangeB">,</label>
-        <input type="number" name="rangeB" class="form-control rangeB" value="12">><br>
-        <label for="precision">Precyzja</label>
-        <input type="number" name="precision" class="form-control precision" value="3"><br>
-        <label for="real">Real</label>
-        <input type="number" name="real" class="form-control real" value="-1.234">
-        <label for="bin">Bin</label>
-        <input type="text" name="bin" class="form-control bin" value="0111111111111">
+    <div class="form-group row">
+        <label for="rangeA" class="col-sm-3 col-form-label">Zakres: </label>
+        <div class="col-sm-2 col-lg-2">
+          <input type="number" name="rangeA" class="form-control rangeA" value="-4">
+        </div>
+        <div class="col-sm-2 col-lg-2 col-">
+          <input type="number" name="rangeB" class="form-control rangeB" value="12">
+        </div>
     </div>
-    <input type="button" class="submit" value="Generuj">
+    <br>
+
+    <div class="form-group row">
+        <label for="precision" class="col-sm-3 col-form-label">Precyzja (10<sup>-x</sup>)</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="precision" class="form-control precision" value="3">
+          <label for="precision" class="example">	</label>
+        </div>
+    </div>
+    <br>
+
+    <div class="form-group row">
+        <label for="population" class="col-sm-3 col-form-label">Rozmiar populacji</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="population" class="form-control population" value="10">
+        </div>
+    </div>
+    <br>
+
+    <input type="button" class="btn btn-outline-dark submit" value="Generuj">
 </form>
+<br>
 
-<p>power of 2: <div class="power-response"></div></p>
-<p>real: <div class="real-response"></div></p>
-<p>bin: <div class="bin-response"></div></p>
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Ilość bitów:</label>
+  <div class="col-sm-4 col-lg-2">
+    <input type="text" name="population" class="form-control power" readonly>
+  </div>
+</div>
+<br>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Xreal</th>
+      <th scope="col">Xint</th>
+      <th scope="col">Xbin</th>
+      <th scope="col">Xint</th>
+      <th scope="col">Xreal</th>
+      <th scope="col">f(x)</th>
+    </tr>
+  </thead>
+  <tbody class="results">
+  </tbody>
+</table>
 
 {% load static %}
 <script src="{% static 'main.js' %}"></script>   
