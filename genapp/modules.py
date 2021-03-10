@@ -1,11 +1,13 @@
-import decimal
+from decimal import Decimal
 import random
+import math
+import logging
 
-class Modules():
-    def power_of_2(self, rangeA, rangeB, precision):
-        interval = (rangeB - rangeA) * pow(2, precision)
-        return 1 if interval == 0 else 2**(interval - 1).bit_length()
-    def random(self, rangeA, rangeB, precision):
-        return decimal.Decimal(random.randrange(rangeA, rangeB + 1))/pow(10,decimal.Decimal(precision))
-    def rel_to_int(self, rel, rangeA, rangeB, precision):
-        return (1/(rangeB-rangeA)) * (rel - rangeA) * (pow(2, precision))
+logger = logging.getLogger(__name__)
+
+def power_of_2(rangeA, rangeB, precision):
+    return math.ceil(math.log(((rangeB - rangeA) * (1/pow(10,Decimal(-precision))) + 1), 2))
+def random_rel(rangeA, rangeB, precision):
+    return Decimal(random.randrange(rangeA, rangeB + 1))/pow(10,Decimal(precision))
+def rel_to_int(rel, rangeA, rangeB, precision):
+    return (1/(rangeB-rangeA)) * (rel - rangeA) * (pow(2, precision))

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from genapp.modules import Modules
+from genapp.modules import power_of_2
+from decimal import Decimal
 
 # Create your views here.
 def index(request):
@@ -13,10 +14,10 @@ def index(request):
 
 def start(request):
     if request.is_ajax and request.method == "POST":
-        rel = request.POST['rel']
-        ##rangeA = request.POST['rangeA']
-        ##rangeB = request.POST['rangeB']
-        ##precision = request.POST['precision']
+        ##rel = Decimal(request.POST['rel'])
+        rangeA = Decimal(request.POST['rangeA'])
+        rangeB = Decimal(request.POST['rangeB'])
+        precision = Decimal(request.POST['precision'])
         ##populationSize = request.POST['populationSize']
 
         ##Modules.random(rangeA, rangeB, precision)
@@ -24,6 +25,6 @@ def start(request):
         ##Modules.power_of_2(rangeA, rangeB, precision)    
 
         context = {
-            'rel': rel
+            'rel': power_of_2(rangeA, rangeB, precision)
         }
         return JsonResponse(context, status=200)
