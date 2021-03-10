@@ -11,14 +11,18 @@
         <input type="number" name="rangeB" class="form-control rangeB" value="12">><br>
         <label for="precision">Precyzja</label>
         <input type="number" name="precision" class="form-control precision" value="3"><br>
-        <label for="rel">Rel</label>
-        <input type="number" name="rel" class="form-control rel" value="-1.234">
+        <label for="real">Real</label>
+        <input type="number" name="real" class="form-control real" value="-1.234">
+        <label for="bin">Bin</label>
+        <input type="text" name="bin" class="form-control bin" value="0111111111111">
     </div>
     <input type="button" class="submit" value="Generuj">
 </form>
 
-<p>rel: </p>
-<div class="rel-response"></div>
+<p>power of 2: <div class="power-response"></div></p>
+<p>real: <div class="real-response"></div></p>
+<p>bin: <div class="bin-response"></div></p>
+
 
 {% load static %}
 <script src="{% static 'main.js' %}"></script>   

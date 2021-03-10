@@ -4,14 +4,11 @@ $('.submit').on('click', function () {
 
 function submit() {
     const csrftoken = getCookie('csrftoken');
-    const rel = $(".rel").val()
+    const real = $(".real").val()
+    const bin = $(".bin").val()
     const rangeA = $(".rangeA").val()
     const rangeB = $(".rangeB").val()
     const precision = $(".precision").val()
-
-    console.log(rangeA)
-    console.log(rangeB)
-    console.log(precision)
 
     $.ajax({
         url: 'start/',
@@ -19,13 +16,16 @@ function submit() {
         dataType: 'json',
         data: {
             csrfmiddlewaretoken: csrftoken,
-            rel: rel,
+            real: real,
+            bin: bin,
             rangeA: rangeA,
             rangeB: rangeB,
             precision: precision,
         },
         success: function (result) {
-            $(".rel-response").text(result.rel)
+            $(".power-response").text(result.power)
+            $(".real-response").text(result.real)
+            $(".bin-response").text(result.bin)
         }
     });
 }
