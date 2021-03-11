@@ -1,4 +1,6 @@
 body {
+
+    height: 101vh;
     width: 80%;
     margin: 0 auto;
 }
@@ -11,4 +13,10 @@ form {
 .example {
     display: inline-block;
     text-align: right;
+}
+
+.overflow {
+    width: 100%;
+    overflow-y: auto;
+    border: 1px solid #c2c3c4;
 }

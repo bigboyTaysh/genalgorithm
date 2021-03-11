@@ -5,11 +5,13 @@
 <link href="{% static 'main.css' %}" rel="stylesheet"></script>
 
 <h1>Wybierz parametry</h1>
+<p>dla funkcji f(x)= x MOD 1 * (COS( 20 * π * x) – SIN(x))</p>
+<br>
 
 <form action="{% url 'start' %}" method="post"> 
     {% csrf_token %}
     <div class="form-group row">
-        <label for="rangeA" class="col-sm-3 col-form-label">Zakres: </label>
+        <label for="rangeA" class="col-sm-3 col-form-label">Zakres &#10092;a,b&#10093;: </label>
         <div class="col-sm-2 col-lg-2">
           <input type="number" name="rangeA" class="form-control rangeA" value="-4">
         </div>
@@ -22,7 +24,7 @@
     <div class="form-group row">
         <label for="precision" class="col-sm-3 col-form-label">Precyzja (10<sup>-x</sup>)</label>
         <div class="col-sm-4 col-lg-2">
-          <input type="number" name="precision" class="form-control precision" value="3">
+          <input type="number" name="precision" class="form-control precision" value="3" min="0" step="1">
           <label for="precision" class="example">	</label>
         </div>
     </div>
@@ -48,21 +50,24 @@
 </div>
 <br>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Xreal</th>
-      <th scope="col">Xint</th>
-      <th scope="col">Xbin</th>
-      <th scope="col">Xint</th>
-      <th scope="col">Xreal</th>
-      <th scope="col">f(x)</th>
-    </tr>
-  </thead>
-  <tbody class="results">
-  </tbody>
-</table>
+<div class="overflow">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Xreal</th>
+        <th scope="col">Xint</th>
+        <th scope="col">Xbin</th>
+        <th scope="col">Xint</th>
+        <th scope="col">Xreal</th>
+        <th scope="col">f(x)</th>
+      </tr>
+    </thead>
+    <tbody class="results">
+    </tbody>
+  </table>
+</div>
+
 
 {% load static %}
 <script src="{% static 'main.js' %}"></script>   

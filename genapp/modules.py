@@ -28,6 +28,9 @@ def func(real, precision):
     format_str = '%.' + str(precision) + 'f'
     fraction, integer = math.modf(real)
     fx = fraction * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
+    if (fx == '-0.0'):
+        fx = '0.0'
+    
     return format(format_str % fx)
 
 def get_individual(rangeA, rangeB, precision, power):
