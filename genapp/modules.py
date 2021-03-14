@@ -25,13 +25,12 @@ def int_to_real(integer, rangeA, rangeB, precision, power):
     return rangeA + ((rangeB - rangeA) * integer)/(pow(2, power)-1)
 
 def func(real, precision):
-    format_str = '%.' + str(precision) + 'f'
+    #format_str = '%.' + str(precision) + 'f'
     fraction, integer = math.modf(real)
-    fx = fraction * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
-    if (fx == '-0.0'):
-        fx = '0.0'
-    
-    return format(format_str % fx)
+    fx = round(fraction, precision) * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
+
+    #return format(format_str % fx)
+    return fx
 
 def get_individual(rangeA, rangeB, precision, power):
     real = random_real(rangeA, rangeB, precision)
