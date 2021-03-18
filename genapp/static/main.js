@@ -1,8 +1,12 @@
-$('.submit').on('click', function () {
-    submit()
+$('.start').on('click', function () {
+    start();
 })
 
-function submit() {
+$('.selection').on('click', function () {
+    selection();
+})
+
+function start() {
     const csrftoken = getCookie('csrftoken');
     const rangeA = $(".rangeA").val()
     const rangeB = $(".rangeB").val()
@@ -34,6 +38,43 @@ function submit() {
                         "<td>" + result.fields.binary + "</td>" + 
                         "<td>" + result.fields.int_from_bin + "</td>" + 
                         "<td>" + result.fields.real_from_int + "</td>" + 
+                        "<td>" + result.fields.fx + "</td>" + 
+                    "</tr>"
+
+                html += elem;
+            })
+
+            $(".results").html(html);
+        }
+    });
+}
+
+function selection(){
+    const csrftoken = getCookie('csrftoken');
+    const rangeA = $(".rangeA").val()
+    const rangeB = $(".rangeB").val()
+    const precision = $(".precision").val()
+    const population = $(".population").val()
+
+    $.ajax({
+        url: location.origin + '/selection/',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            csrfmiddlewaretoken: csrftoken,
+            rangeA: rangeA,
+            rangeB: rangeB,
+            precision: precision,
+            population: population
+        },
+        success: function (results) {
+            let html = '';
+
+            JSON.parse(results.individuals).forEach((result, index) => {
+                let elem = 
+                    "<tr> " +
+                        "<th scope='row'>" + (index + 1) + "</th>" +
+                        "<td>" + result.fields.real + "</td>" + 
                         "<td>" + result.fields.fx + "</td>" + 
                     "</tr>"
 

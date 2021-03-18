@@ -13,7 +13,7 @@
 <p>dla funkcji f(x)= x MOD 1 * (COS( 20 * π * x) – SIN(x))</p>
 <br>
 
-<form action="{% url 'start' %}" method="post"> 
+<form> 
     {% csrf_token %}
     <div class="form-group row">
         <label for="rangeA" class="col-sm-3 col-form-label">Zakres &#10092;a,b&#10093;: </label>
@@ -43,7 +43,7 @@
     </div>
     <br>
 
-    <input type="button" class="btn btn-outline-dark submit" value="Generuj">
+    <input type="button" class="btn btn-outline-dark start" value="Generuj">
 </form>
 <br>
 

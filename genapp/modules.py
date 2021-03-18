@@ -46,9 +46,12 @@ def get_individual(rangeA, rangeB, precision, power):
         real_from_int=real_from_int,
         fx=func(real, precision))
 
-def get_individual_array(rangeA, rangeB, precision, power, population):
-    array = []
+def get_individuals_array(rangeA, rangeB, precision, power, population):
+    individuals = []
     for x in range(population):
-        array.append(get_individual(rangeA, rangeB, precision, power))
+        individuals.append(get_individual(rangeA, rangeB, precision, power))
 
-    return array
+    return individuals
+
+def selection_of_individuals(individuals):
+    return individuals
