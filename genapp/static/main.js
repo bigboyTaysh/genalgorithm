@@ -3,7 +3,7 @@ $('.submit').on('click', function () {
 })
 
 function submit() {
-    $(".results").html("")
+    
 
     const csrftoken = getCookie('csrftoken');
     const rangeA = $(".rangeA").val()
@@ -25,8 +25,10 @@ function submit() {
         success: function (results) {
             $(".power").val(results.power)
 
+            let html = '';
+
             results.individuals.forEach((result, index) => {
-                let html = "<tr> " +
+                let elem = "<tr> " +
                 "<th scope='row'>" + (index + 1) + "</th>" +
                     "<td>" + result.real + "</td>" + 
                     "<td>" + result.int_from_real + "</td>" + 
@@ -36,8 +38,10 @@ function submit() {
                     "<td>" + result.fx + "</td>" + 
                 "</tr>"
 
-                $(".results").append(html)
-            }) 
+                html += elem;
+            })
+
+            $(".results").html(html);
         }
     });
 }
