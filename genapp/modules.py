@@ -59,5 +59,10 @@ def selection_of_individuals(individuals, precision):
 
     for individual in individuals:
         individual.gx = individual.fx - fx_min + pow(10,-precision)
+    
+    sum_gx = sum(individual.gx for individual in individuals)
+    
+    for individual in individuals:
+        individual.px = individual.gx / sum_gx
 
     return individuals
