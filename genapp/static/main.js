@@ -69,6 +69,7 @@ function selection(){
         },
         success: function (results) {
             let html = '';
+            let selected = JSON.parse(results.selected_individuals)
 
             JSON.parse(results.individuals).forEach((result, index) => {
                 let elem = 
@@ -79,7 +80,8 @@ function selection(){
                         "<td>" + result.fields.gx + "</td>" + 
                         "<td>" + result.fields.px + "</td>" + 
                         "<td>" + result.fields.qx + "</td>" + 
-                        "<td>" + results.randoms[index] + "</td>" + 
+                        "<td class='border-start'>" + results.randoms[index] + "</td>" + 
+                        "<td>" + selected[index].fields.real + "</td>" + 
                     "</tr>"
 
                 html += elem;

@@ -76,4 +76,12 @@ def selection_of_individuals(individuals, precision):
     for i in range(0, len(individuals)):
         randoms.append(random.random())
 
-    return individuals, randoms
+    selected_individuals = []
+    for i in range(0, len(randoms)):
+        for j in range(0, len(individuals)):
+            if(randoms[i] <= individuals[j].qx):
+                selected_individuals.append(individuals[j])
+                break
+
+
+    return individuals, randoms, selected_individuals
