@@ -79,6 +79,7 @@ function selection(){
                         "<td>" + result.fields.gx + "</td>" + 
                         "<td>" + result.fields.px + "</td>" + 
                         "<td>" + result.fields.qx + "</td>" + 
+                        "<td>" + results.randoms[index] + "</td>" + 
                     "</tr>"
 
                 html += elem;

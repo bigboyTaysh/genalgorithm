@@ -69,4 +69,11 @@ def selection_of_individuals(individuals, precision):
     for i in range(1, len(individuals)):
         individuals[i].qx = individuals[i].px + individuals[i-1].qx
 
-    return individuals
+    for individual in individuals:
+        individual.px = individual.gx / sum_gx
+
+    randoms = []
+    for i in range(0, len(individuals)):
+        randoms.append(random.random())
+
+    return individuals, randoms

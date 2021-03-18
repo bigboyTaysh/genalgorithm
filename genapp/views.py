@@ -52,8 +52,9 @@ def selection(request):
         individuals = modules.get_individuals_array(
             rangeA, rangeB, precision, power, population)
 
+        individuals, randoms = modules.selection_of_individuals(individuals, precision)
         context = {
-            'individuals': serializers.serialize("json",
-                                                 modules.selection_of_individuals(individuals, precision))
+            'individuals': serializers.serialize("json", individuals),
+            'randoms': randoms
         }
         return JsonResponse(context, status=200)
