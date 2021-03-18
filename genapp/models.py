@@ -8,3 +8,4 @@ class Individual(models.Model):
     int_from_bin = models.IntegerField()
     real_from_int = models.DecimalField(max_digits=30, decimal_places=20)
     fx = models.DecimalField(max_digits=30, decimal_places=20)
+    gx = models.DecimalField(max_digits=30, decimal_places=20)

@@ -3,12 +3,13 @@ import random
 import math
 import logging
 from genapp.models import Individual 
+from operator import attrgetter
 
 logger = logging.getLogger(__name__)
 
 def random_real(rangeA, rangeB, precision):
-    precision = pow(10,Decimal(precision))
-    return Decimal(random.randrange(rangeA * precision, (rangeB) * precision + 1))/precision
+    prec = pow(10,Decimal(precision))
+    return round(Decimal(random.randrange(rangeA * prec, (rangeB) * prec + 1))/prec, precision)
 
 def power_of_2(rangeA, rangeB, precision):
     return math.ceil(math.log(((rangeB - rangeA) * (1/pow(10,Decimal(-precision))) + 1), 2))
@@ -53,5 +54,10 @@ def get_individuals_array(rangeA, rangeB, precision, power, population):
 
     return individuals
 
-def selection_of_individuals(individuals):
+def selection_of_individuals(individuals, precision):
+    fx_min = min(individuals, key=attrgetter('fx')).fx
+
+    for individual in individuals:
+        individual.gx = individual.fx - fx_min + pow(10,-precision)
+
     return individuals

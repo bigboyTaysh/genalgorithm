@@ -76,6 +76,7 @@ function selection(){
                         "<th scope='row'>" + (index + 1) + "</th>" +
                         "<td>" + result.fields.real + "</td>" + 
                         "<td>" + result.fields.fx + "</td>" + 
+                        "<td>" + result.fields.gx + "</td>" + 
                     "</tr>"
 
                 html += elem;

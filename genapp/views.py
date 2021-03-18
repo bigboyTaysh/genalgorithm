@@ -54,6 +54,6 @@ def selection(request):
 
         context = {
             'individuals': serializers.serialize("json",
-                                                 modules.selection_of_individuals(individuals))
+                                                 modules.selection_of_individuals(individuals, precision))
         }
         return JsonResponse(context, status=200)
