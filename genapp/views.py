@@ -1,16 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
+from django.core import serializers
 import genapp.modules
 from decimal import Decimal
 
 # Create your views here.
 def index(request):
     template = loader.get_template('genapp/index.html')
-    context = {
-        'result': "Hello, world. You're at the genapp index."
-    }
-    return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render())
+
+def lab02(request):
+    template = loader.get_template('genapp/lab02.html')
+    return HttpResponse(template.render())
+
+def lab03(request):
+    template = loader.get_template('genapp/lab03.html')
+    return HttpResponse(template.render())
 
 def start(request):
     if request.is_ajax and request.method == "POST":
@@ -23,7 +29,8 @@ def start(request):
  
         context = {
             'power': power,
-            'individuals': genapp.modules.get_individual_array(rangeA, rangeB, precision, power, population)
+            'individuals': serializers.serialize("json",
+                genapp.modules.get_individual_array(rangeA, rangeB, precision, power, population))
         }
         
         return JsonResponse(context, status=200)

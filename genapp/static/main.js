@@ -3,8 +3,6 @@ $('.submit').on('click', function () {
 })
 
 function submit() {
-    
-
     const csrftoken = getCookie('csrftoken');
     const rangeA = $(".rangeA").val()
     const rangeB = $(".rangeB").val()
@@ -12,7 +10,7 @@ function submit() {
     const population = $(".population").val()
 
     $.ajax({
-        url: 'start/',
+        url: location.origin + '/start/',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -27,15 +25,15 @@ function submit() {
 
             let html = '';
 
-            results.individuals.forEach((result, index) => {
+            JSON.parse(results.individuals).forEach((result, index) => {
                 let elem = "<tr> " +
                 "<th scope='row'>" + (index + 1) + "</th>" +
-                    "<td>" + result.real + "</td>" + 
-                    "<td>" + result.int_from_real + "</td>" + 
-                    "<td>" + result.bin + "</td>" + 
-                    "<td>" + result.int_from_bin + "</td>" + 
-                    "<td>" + result.real_from_int + "</td>" + 
-                    "<td>" + result.fx + "</td>" + 
+                    "<td>" + result.fields.real + "</td>" + 
+                    "<td>" + result.fields.int_from_real + "</td>" + 
+                    "<td>" + result.fields.binary + "</td>" + 
+                    "<td>" + result.fields.int_from_bin + "</td>" + 
+                    "<td>" + result.fields.real_from_int + "</td>" + 
+                    "<td>" + result.fields.fx + "</td>" + 
                 "</tr>"
 
                 html += elem;
