@@ -6,7 +6,9 @@
 <link href="{% static 'main.css' %}" rel="stylesheet"></script>
 <link rel="icon" href="{% static 'favicon.ico' %}">
 
-<h1>lab02</h1>
+{% include "genapp/nav.html" with active_page='lab02' %}
+{% include "genapp/header.html" %}
+
 <h3>Wybierz parametry</h3>
 <p>dla funkcji f(x)= x MOD 1 * (COS( 20 * π * x) – SIN(x))</p>
 <br>

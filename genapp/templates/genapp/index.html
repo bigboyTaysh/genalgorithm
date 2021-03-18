@@ -1,14 +1,12 @@
-<link rel="icon" type="image/png" href="favicon.ico">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-{% load static %}
-<link href="{% static 'main.css' %}" rel="stylesheet"></script>
-<link rel="icon" href="{% static 'favicon.ico' %}">
+{% include "genapp/header.html" %}
 
+<div class="container">
+  <div class="row justify-content-md-center text-center">
+    <ul class="list-group w-50">
+      <li class="list-group-item"><a class="nav-link active display-6" href="lab03">lab03</a></li>
+      <li class="list-group-item"><a class="nav-link active display-6" href="lab02">lab02</a></li>
+    </ul>
+  </div>  
+</div>
 
-
-
-
-{% load static %}
-<script src="{% static 'main.js' %}"></script>   
+{% include "genapp/footer.html" %}
