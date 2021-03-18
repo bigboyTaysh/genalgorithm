@@ -10,3 +10,4 @@ class Individual(models.Model):
     fx = models.DecimalField(max_digits=30, decimal_places=20)
     gx = models.DecimalField(max_digits=30, decimal_places=20)
     px = models.DecimalField(max_digits=30, decimal_places=20)
+    qx = models.DecimalField(max_digits=30, decimal_places=20)

@@ -78,6 +78,7 @@ function selection(){
                         "<td>" + result.fields.fx + "</td>" + 
                         "<td>" + result.fields.gx + "</td>" + 
                         "<td>" + result.fields.px + "</td>" + 
+                        "<td>" + result.fields.qx + "</td>" + 
                     "</tr>"
 
                 html += elem;
