@@ -29,7 +29,7 @@ function start() {
 
             let html = '';
 
-            JSON.parse(results.individuals).forEach((result, index) => {
+            JSON.parse(results.individuals).forEach(function (result, index) {
                 let elem = 
                     "<tr> " +
                         "<th scope='row'>" + (index + 1) + "</th>" +
@@ -71,7 +71,7 @@ function selection(){
             let html = '';
             let selected = JSON.parse(results.selected_individuals)
 
-            JSON.parse(results.individuals).forEach((result, index) => {
+            JSON.parse(results.individuals).forEach(function (result, index) {
                 let elem = 
                     "<tr> " +
                         "<th scope='row'>" + (index + 1) + "</th>" +
