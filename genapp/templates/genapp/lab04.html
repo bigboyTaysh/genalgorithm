@@ -43,7 +43,15 @@
     </div>
     <br>
 
-    <input type="button" class="btn btn-outline-dark selection" value="Generuj">
+    <div class="form-group row">
+      <label for="crossover_probability" class="col-sm-3 col-form-label">Prawdopodobieństwo krzyżowania</label>
+      <div class="col-sm-4 col-lg-2">
+        <input type="number" name="crossover_probability" class="form-control crossover_probability" value="0.75">
+      </div>
+  </div>
+  <br>
+
+    <input type="button" class="btn btn-outline-dark crossover" value="Generuj">
 </form>
 <br>
 
@@ -52,6 +60,9 @@
     <thead>
       <tr>
         <th scope="col">#</th>
+        <th scope="col">Xreal</th>
+        <th scope="col">Xbin</th>
+        <th scope="col">Xbin</th>
       </tr>
     </thead>
     <tbody class="results">

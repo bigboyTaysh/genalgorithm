@@ -23,37 +23,55 @@ def lab04(request):
 
 def start(request):
     if request.is_ajax and request.method == "POST":
-        rangeA = Decimal(request.POST['rangeA'])
-        rangeB = Decimal(request.POST['rangeB'])
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
 
-        power = modules.power_of_2(rangeA, rangeB, precision)
+        power = modules.power_of_2(range_a, range_b, precision)
 
         context = {
             'power': power,
             'individuals': serializers.serialize("json",
-                                                 modules.get_individuals_array(rangeA, rangeB, precision, power, population))
+                                                 modules.get_individuals_array(range_a, range_b, precision, population))
         }
 
         return JsonResponse(context, status=200)
 
 def selection(request):
     if request.is_ajax and request.method == "POST":
-        rangeA = Decimal(request.POST['rangeA'])
-        rangeB = Decimal(request.POST['rangeB'])
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
-        power = modules.power_of_2(rangeA, rangeB, precision)
 
         individuals = modules.get_individuals_array(
-            rangeA, rangeB, precision, power, population)
-
-        individuals, randoms, selected_individuals = modules.selection_of_individuals(individuals, precision)
+            range_a, range_b, precision, population)
+        randoms, selected_individuals = modules.selection_of_individuals(individuals, precision)
         context = {
             'individuals': serializers.serialize("json", individuals),
             'randoms': randoms,
             'selected_individuals': serializers.serialize("json", selected_individuals)
+        }
+
+        return JsonResponse(context, status=200)
+
+def crossover(request):
+    if request.is_ajax and request.method == "POST":
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
+        precision = int(request.POST['precision'])
+        population = int(request.POST['population'])
+        crossover_probability = Decimal(request.POST['crossover_probability'])
+
+        individuals = modules.get_individuals_array(
+            range_a, range_b, precision, population)
+
+        selected_individuals = modules.selection_of_individuals(individuals, precision)[1]
+        modules.crossover_of_individuals(selected_individuals, crossover_probability)
+
+        context = {
+            'individuals': serializers.serialize("json", selected_individuals),
         }
 
         return JsonResponse(context, status=200)

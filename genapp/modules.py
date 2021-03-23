@@ -7,15 +7,15 @@ from operator import attrgetter
 
 logger = logging.getLogger(__name__)
 
-def random_real(rangeA, rangeB, precision):
+def random_real(range_a, range_b, precision):
     prec = pow(10,Decimal(precision))
-    return round(Decimal(random.randrange(rangeA * prec, (rangeB) * prec + 1))/prec, precision)
+    return round(Decimal(random.randrange(range_a * prec, (range_b) * prec + 1))/prec, precision)
 
-def power_of_2(rangeA, rangeB, precision):
-    return math.ceil(math.log(((rangeB - rangeA) * (1/pow(10,Decimal(-precision))) + 1), 2))
+def power_of_2(range_a, range_b, precision):
+    return math.ceil(math.log(((range_b - range_a) * (1/pow(10,Decimal(-precision))) + 1), 2))
 
-def real_to_int(real, rangeA, rangeB, power):
-    return round((1/(rangeB-rangeA)) * (real - rangeA) * ((pow(2, power)-1)))
+def real_to_int(real, range_a, range_b, power):
+    return round((1/(range_b-range_a)) * (real - range_a) * ((pow(2, power)-1)))
 
 def bin_to_int(binary):
     return int(str(binary),2)
@@ -23,21 +23,21 @@ def bin_to_int(binary):
 def int_to_bin(integer, power):
     return format(integer, '0' + str(power) + 'b')
 
-def int_to_real(integer, rangeA, rangeB, precision, power):
-    return round(rangeA + ((rangeB - rangeA) * integer)/(pow(2, power)-1), precision)
+def int_to_real(integer, range_a, range_b, precision, power):
+    return round(range_a + ((range_b - range_a) * integer)/(pow(2, power)-1), precision)
 
 def func(real, precision):
     #format_str = '%.' + str(precision) + 'f'
-    fraction, integer = math.modf(real)
+    fraction = math.modf(real)[0]
     #return format(format_str % fx)
     return round(fraction, precision) * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
 
-def get_individual(rangeA, rangeB, precision, power):
-    real = random_real(rangeA, rangeB, precision)
-    int_from_real = real_to_int(real, rangeA, rangeB, power)
+def get_individual(range_a, range_b, precision, power):
+    real = random_real(range_a, range_b, precision)
+    int_from_real = real_to_int(real, range_a, range_b, power)
     binary = int_to_bin(int_from_real, power)
     int_from_bin =  bin_to_int(binary)
-    real_from_int = int_to_real(int_from_bin, rangeA, rangeB, precision, power)
+    real_from_int = int_to_real(int_from_bin, range_a, range_b, precision, power)
 
     return Individual(
         real=real,
@@ -47,10 +47,12 @@ def get_individual(rangeA, rangeB, precision, power):
         real_from_int=real_from_int,
         fx=func(real, precision))
 
-def get_individuals_array(rangeA, rangeB, precision, power, population):
+def get_individuals_array(range_a, range_b, precision, population):
     individuals = []
+    power = power_of_2(range_a, range_b, precision)
+    
     for x in range(population):
-        individuals.append(get_individual(rangeA, rangeB, precision, power))
+        individuals.append(get_individual(range_a, range_b, precision, power))
 
     return individuals
 
@@ -83,5 +85,11 @@ def selection_of_individuals(individuals, precision):
                 selected_individuals.append(individuals[j])
                 break
 
+    return randoms, selected_individuals
 
-    return individuals, randoms, selected_individuals
+def crossover_of_individuals(individuals, crossover_probability):
+    for i in range(0, len(individuals)):
+        if (random.random() < crossover_probability):
+            individuals[i].is_parent = True
+        else:
+            individuals[i].is_parent = False
