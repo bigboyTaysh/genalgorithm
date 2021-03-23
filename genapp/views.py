@@ -10,21 +10,15 @@ from django.template import RequestContext
 
 # Create your views here.
 def index(request):
-    template = loader.get_template('genapp/index.html')
     return render(request,'genapp/index.html')
-    ##return HttpResponse(template.render())
 
 
 def lab02(request):
-    template = loader.get_template('genapp/lab02.html')
     return render(request,'genapp/lab02.html')
-    ##return HttpResponse(template.render())
 
 
 def lab03(request):
-    template = loader.get_template('genapp/lab03.html')
     return render(request,'genapp/lab03.html')
-    ##return HttpResponse(template.render())
 
 def start(request):
     if request.is_ajax and request.method == "POST":
