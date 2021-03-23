@@ -73,7 +73,7 @@ function selection(){
         },
         success: function (results) {
             let html = '';
-            let selected = JSON.parse(results.selected_individuals)
+            let selected = JSON.parse(results.selected_individuals);
 
             JSON.parse(results.individuals).forEach(function (result, index) {
                 let elem = 
@@ -118,16 +118,22 @@ function crossover(){
         },
         success: function (results) {
             let html = '';
-            //let selected = JSON.parse(results.selected_individuals)
+            let childs = JSON.parse(results.childs);
 
             JSON.parse(results.individuals).forEach(function (result, index) {
-                let parent = result.fields.is_parent === true ? result.fields.binary : "------";
                 let elem = 
                     "<tr> " +
                         "<th scope='row'>" + (index + 1) + "</th>" +
                         "<td>" + result.fields.real + "</td>" + 
                         "<td>" + result.fields.binary + "</td>" + 
-                        "<td>" + parent + "</td>" + 
+                        "<td>" + (result.fields.is_parent === true ? result.fields.binary : "------") + "</td>" + 
+                        "<td>" + (result.fields.crossover_points != "" ? result.fields.crossover_points : "--") + "</td>" + 
+                        "<td>" + (result.fields.child_binary != "" ? result.fields.child_binary : "------") + "</td>" +  
+                        "<td>" + result.fields.cross_population + "</td>" + 
+                        "<td>" + "mutacja" + "</td>" + 
+                        "<td>" + childs[index].fields.binary + "</td>" + 
+                        "<td>" + childs[index].fields.real + "</td>" + 
+                        "<td>" + childs[index].fields.fx + "</td>" + 
                     "</tr>"
 
                 html += elem;

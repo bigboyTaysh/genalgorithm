@@ -4,6 +4,7 @@ import math
 import logging
 from genapp.models import Individual 
 from operator import attrgetter
+from copy import deepcopy
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +48,24 @@ def get_individual(range_a, range_b, precision, power):
         real_from_int=real_from_int,
         fx=func(real, precision))
 
-def get_individuals_array(range_a, range_b, precision, population):
+def get_individual_from_binary(binary, range_a, range_b, precision, power):
+    int_from_bin =  bin_to_int(binary)
+    real_from_int = int_to_real(int_from_bin, range_a, range_b, precision, power)
+    real = real_from_int
+    int_from_real = real_to_int(real, range_a, range_b, power)
+
+    return Individual(
+        real=real,
+        int_from_real=int_from_real,
+        binary=binary,
+        int_from_bin=int_from_bin,
+        real_from_int=real_from_int,
+        fx=func(real, precision))
+
+def get_individuals_array(range_a, range_b, precision, population, power):
     individuals = []
-    power = power_of_2(range_a, range_b, precision)
     
-    for x in range(population):
+    for i in range(population):
         individuals.append(get_individual(range_a, range_b, precision, power))
 
     return individuals
@@ -82,14 +96,46 @@ def selection_of_individuals(individuals, precision):
     for i in range(0, len(randoms)):
         for j in range(0, len(individuals)):
             if(randoms[i] <= individuals[j].qx):
-                selected_individuals.append(individuals[j])
+                selected_individuals.append(deepcopy(individuals[j]))
                 break
 
     return randoms, selected_individuals
 
-def crossover_of_individuals(individuals, crossover_probability):
-    for i in range(0, len(individuals)):
+def crossover(individuals, crossover_probability, range_a, range_b, precision, power):
+    parents = []
+    childs = []
+
+    for individual in individuals:
         if (random.random() < crossover_probability):
-            individuals[i].is_parent = True
+            individual.is_parent = True
+            parents.append(individual)
         else:
-            individuals[i].is_parent = False
+            individual.is_parent = False
+            individual.cross_population = individual.binary 
+    
+    len_parents = len(parents)
+    if len_parents % 2 == 0:
+        for i in range(0, len_parents, 2):
+            crossover_of_individuals(parents[i], parents[i+1])
+    else:
+        for i in range(0, len_parents-1, 2):
+            crossover_of_individuals(parents[i], parents[i+1])
+        crossover_of_individuals(parents[random.randrange(0,len_parents-1)], parents[len_parents-1])
+
+    for individual in individuals:
+        childs.append(get_individual_from_binary(individual.cross_population, range_a, range_b, precision, power))
+
+    return childs
+
+def crossover_of_individuals(individual_1, individual_2):
+    crossover_point = random.randrange(1,len(individual_1.binary))
+    if individual_1.crossover_points:
+        individual_1.crossover_points += ", "
+        individual_1.crossover_points += str(crossover_point)
+    else:
+        individual_1.crossover_points += str(crossover_point)
+        individual_1.child_binary = individual_1.binary[:crossover_point] + individual_2.binary[crossover_point:]
+        individual_1.cross_population = individual_1.child_binary
+    individual_2.crossover_points += str(crossover_point)  
+    individual_2.child_binary = individual_2.binary[:crossover_point] + individual_1.binary[crossover_point:]
+    individual_2.cross_population = individual_2.child_binary

@@ -45,9 +45,10 @@ def selection(request):
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
 
+        power = modules.power_of_2(range_a, range_b, precision)
         individuals = modules.get_individuals_array(
             range_a, range_b, precision, population)
-        randoms, selected_individuals = modules.selection_of_individuals(individuals, precision)
+        randoms, selected_individuals = modules.selection_of_individuals(individuals, precision, power)
         context = {
             'individuals': serializers.serialize("json", individuals),
             'randoms': randoms,
@@ -64,14 +65,15 @@ def crossover(request):
         population = int(request.POST['population'])
         crossover_probability = Decimal(request.POST['crossover_probability'])
 
+        power = modules.power_of_2(range_a, range_b, precision)
         individuals = modules.get_individuals_array(
-            range_a, range_b, precision, population)
-
+            range_a, range_b, precision, population, power)
         selected_individuals = modules.selection_of_individuals(individuals, precision)[1]
-        modules.crossover_of_individuals(selected_individuals, crossover_probability)
+        childs = modules.crossover(selected_individuals, crossover_probability, range_a, range_b, precision, power)
 
         context = {
             'individuals': serializers.serialize("json", selected_individuals),
+            'childs': serializers.serialize("json", childs)
         }
 
         return JsonResponse(context, status=200)

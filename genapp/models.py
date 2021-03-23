@@ -12,3 +12,6 @@ class Individual(models.Model):
     px = models.DecimalField(max_digits=30, decimal_places=20)
     qx = models.DecimalField(max_digits=30, decimal_places=20)
     is_parent = models.BooleanField()
+    crossover_points = models.CharField(max_length=200)
+    child_binary = models.CharField(max_length=30)
+    cross_population = models.CharField(max_length=30)
