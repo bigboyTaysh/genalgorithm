@@ -15,3 +15,5 @@ class Individual(models.Model):
     crossover_points = models.CharField(max_length=200)
     child_binary = models.CharField(max_length=30)
     cross_population = models.CharField(max_length=30)
+    mutation_points = models.CharField(max_length=30)
+    mutant_population = models.CharField(max_length=30)

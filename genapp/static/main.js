@@ -102,7 +102,8 @@ function crossover(){
     const rangeB = $(".rangeB").val()
     const precision = $(".precision").val()
     const population = $(".population").val()
-    const crossoverProbability = $(".crossover_probability").val()
+    const crossoverProbability = $(".crossoverProbability").val()
+    const probabilityOfMutation = $(".probabilityOfMutation").val()
 
     $.ajax({
         url: location.origin + '/crossover/',
@@ -114,11 +115,12 @@ function crossover(){
             range_b: rangeB,
             precision: precision,
             population: population,
-            crossover_probability: crossoverProbability
+            crossover_probability: crossoverProbability,
+            probability_of_mutation: probabilityOfMutation
         },
         success: function (results) {
             let html = '';
-            let childs = JSON.parse(results.childs);
+            let newPopulation = JSON.parse(results.new_population);
 
             JSON.parse(results.individuals).forEach(function (result, index) {
                 let elem = 
@@ -130,10 +132,10 @@ function crossover(){
                         "<td>" + (result.fields.crossover_points != "" ? result.fields.crossover_points : "--") + "</td>" + 
                         "<td>" + (result.fields.child_binary != "" ? result.fields.child_binary : "------") + "</td>" +  
                         "<td>" + result.fields.cross_population + "</td>" + 
-                        "<td>" + "mutacja" + "</td>" + 
-                        "<td>" + childs[index].fields.binary + "</td>" + 
-                        "<td>" + childs[index].fields.real + "</td>" + 
-                        "<td>" + childs[index].fields.fx + "</td>" + 
+                        "<td>" + result.fields.mutation_points + "</td>" + 
+                        "<td>" + result.fields.mutant_population + "</td>" + 
+                        "<td>" + newPopulation[index].fields.real + "</td>" + 
+                        "<td>" + newPopulation[index].fields.fx + "</td>" + 
                     "</tr>"
 
                 html += elem;
