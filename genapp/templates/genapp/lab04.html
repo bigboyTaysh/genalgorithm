@@ -1,0 +1,64 @@
+<link rel="icon" type="image/png" href="favicon.ico">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+{% load static %}
+<link href="{% static 'main.css' %}" rel="stylesheet"></script>
+<link rel="icon" href="{% static 'favicon.ico' %}">
+
+{% include "genapp/nav.html" with active_page='lab04' %}
+{% include "genapp/header.html" %}
+
+<h3>Wybierz parametry</h3>
+<p>dla funkcji f(x)= x MOD 1 * (COS( 20 * π * x) – SIN(x))</p>
+<br>
+
+<form> 
+    {% csrf_token %}
+    <div class="form-group row">
+        <label for="rangeA" class="col-sm-3 col-form-label">Zakres &#10092;a,b&#10093;: </label>
+        <div class="col-sm-2 col-lg-2">
+          <input type="number" name="rangeA" class="form-control rangeA" value="-4">
+        </div>
+        <div class="col-sm-2 col-lg-2 col-">
+          <input type="number" name="rangeB" class="form-control rangeB" value="12">
+        </div>
+    </div>
+    <br>
+
+    <div class="form-group row">
+        <label for="precision" class="col-sm-3 col-form-label">Precyzja (10<sup>-x</sup>)</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="precision" class="form-control precision" value="3" min="0" step="1">
+          <label for="precision" class="example">	</label>
+        </div>
+    </div>
+    <br>
+
+    <div class="form-group row">
+        <label for="population" class="col-sm-3 col-form-label">Rozmiar populacji</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="population" class="form-control population" value="10">
+        </div>
+    </div>
+    <br>
+
+    <input type="button" class="btn btn-outline-dark selection" value="Generuj">
+</form>
+<br>
+
+<div class="overflow">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+      </tr>
+    </thead>
+    <tbody class="results">
+    </tbody>
+  </table>
+</div>
+
+
+{% load static %}
+<script src="{% static 'main.js' %}"></script>   
