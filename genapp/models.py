@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Individual(models.Model):
     real = models.DecimalField(max_digits=30, decimal_places=20)
     int_from_real = models.IntegerField()
@@ -17,3 +17,9 @@ class Individual(models.Model):
     cross_population = models.CharField(max_length=30)
     mutation_points = models.CharField(max_length=30)
     mutant_population = models.CharField(max_length=30)
+
+    def __lt__(self, other):
+        return self.qx < other
+
+    def __gt__(self, other):
+        return self.qx > other

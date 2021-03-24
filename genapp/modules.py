@@ -4,7 +4,12 @@ import math
 import logging
 from genapp.models import Individual
 from operator import attrgetter
-from copy import deepcopy
+from copy import deepcopy, copy
+import bisect
+import numpy as np
+import time
+import ujson
+import _pickle as cPickle
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +89,7 @@ def get_individuals_array(range_a, range_b, precision, population, power):
 
 
 def selection_of_individuals(individuals, precision):
+    len_individuals = len(individuals)
     fx_min = min(individuals, key=attrgetter('fx')).fx
 
     for individual in individuals:
@@ -95,24 +101,18 @@ def selection_of_individuals(individuals, precision):
         individual.px = individual.gx / sum_gx
 
     individuals[0].qx = individuals[0].px
-    for i in range(1, len(individuals)):
+    for i in range(1, len_individuals):
         individuals[i].qx = individuals[i].px + individuals[i-1].qx
+        individuals[i].px = individuals[i].gx / sum_gx
 
-    for individual in individuals:
-        individual.px = individual.gx / sum_gx
-
-    randoms = []
-    for i in range(0, len(individuals)):
-        randoms.append(random.random())
+    randoms = np.random.default_rng().uniform(0,1,len_individuals)
 
     selected_individuals = []
-    for i in range(0, len(randoms)):
-        for j in range(0, len(individuals)):
-            if(randoms[i] <= individuals[j].qx):
-                selected_individuals.append(deepcopy(individuals[j]))
-                break
+    for i in range(0, len_individuals):
+        location = bisect.bisect_right(individuals, randoms[i])
+        selected_individuals.append(copy(individuals[location]))
 
-    return randoms, selected_individuals
+    return randoms.tolist(), selected_individuals
 
 
 def crossover(individuals, crossover_probability, range_a, range_b, precision, power):

@@ -7,8 +7,7 @@ from decimal import Decimal
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import render
 from django.template import RequestContext
-
-# Create your views here.
+import time
 
 
 def index(request):
@@ -74,19 +73,24 @@ def crossover(request):
         population = int(request.POST['population'])
         crossover_probability = Decimal(request.POST['crossover_probability'])
         probability_of_mutation = Decimal(
-            request.POST['probability_of_mutation'])
+        request.POST['probability_of_mutation'])
 
+        
         power = modules.power_of_2(range_a, range_b, precision)
         individuals = modules.get_individuals_array(
             range_a, range_b, precision, population, power)
+
+        
         selected_individuals = modules.selection_of_individuals(
             individuals, precision)[1]
+        
         modules.crossover(selected_individuals, crossover_probability,
                           range_a, range_b, precision, power)
         modules.mutation_of_individuals(
             selected_individuals, probability_of_mutation)
 
         new_population = []
+
         for individual in selected_individuals:
             new_population.append(modules.get_individual_from_binary(
                 individual.mutant_population, range_a, range_b, precision, power))
