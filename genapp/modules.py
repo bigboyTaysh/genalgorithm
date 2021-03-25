@@ -127,14 +127,17 @@ def crossover(individuals, crossover_probability, range_a, range_b, precision, p
             individual.cross_population = individual.binary
 
     len_parents = len(parents)
-    if len_parents % 2 == 0:
-        for i in range(0, len_parents, 2):
-            crossover_of_individuals(parents[i], parents[i+1])
-    else:
-        for i in range(0, len_parents-1, 2):
-            crossover_of_individuals(parents[i], parents[i+1])
-        crossover_of_individuals(parents[random.randrange(
-            0, len_parents-1)], parents[len_parents-1])
+    if len_parents > 1:
+        if len_parents % 2 == 0:
+            for i in range(0, len_parents, 2):
+                crossover_of_individuals(parents[i], parents[i+1])
+        else:
+            for i in range(0, len_parents-1, 2):
+                crossover_of_individuals(parents[i], parents[i+1])
+            crossover_of_individuals(parents[random.randrange(
+                0, len_parents-1)], parents[len_parents-1])
+    else: 
+        individuals[0].cross_population = individuals[0].binary
 
 
 def crossover_of_individuals(individual_1, individual_2):
