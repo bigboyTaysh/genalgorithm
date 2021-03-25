@@ -40,9 +40,7 @@ def int_to_real(integer, range_a, range_b, precision, power):
 
 
 def func(real, precision):
-    #format_str = '%.' + str(precision) + 'f'
     fraction = math.modf(real)[0]
-    # return format(format_str % fx)
     return round(fraction, precision) * (math.cos(20 * Decimal(math.pi) * real) - math.sin(real))
 
 
@@ -119,7 +117,7 @@ def crossover(individuals, crossover_probability, range_a, range_b, precision, p
     parents = []
 
     for individual in individuals:
-        if (random.random() < crossover_probability):
+        if random.random() <= crossover_probability:
             individual.is_parent = True
             parents.append(individual)
         else:
@@ -127,7 +125,6 @@ def crossover(individuals, crossover_probability, range_a, range_b, precision, p
             individual.cross_population = individual.binary
 
     len_parents = len(parents)
-    print(len_parents)
     if len_parents > 1:
         if len_parents % 2 == 0:
             for i in range(0, len_parents, 2):
@@ -135,9 +132,8 @@ def crossover(individuals, crossover_probability, range_a, range_b, precision, p
         else:
             for i in range(0, len_parents-1, 2):
                 crossover_of_individuals(parents[i], parents[i+1])
-            crossover_of_individuals(parents[random.randrange(
-                0, len_parents-1)], parents[len_parents-1])
-    else:
+            crossover_of_individuals(parents[0], parents[len_parents-1])
+    elif len_parents == 1:
         parents[0].is_parent = False
         parents[0].cross_population = parents[0].binary
 
@@ -153,16 +149,15 @@ def crossover_of_individuals(individual_1, individual_2):
             individual_2.binary[crossover_point:]
         individual_1.cross_population = individual_1.child_binary
     individual_2.crossover_points += str(crossover_point)
-    individual_2.child_binary = individual_2.binary[:crossover_point] + \
+    individual_2.cross_population = individual_2.child_binary = individual_2.binary[:crossover_point] + \
         individual_1.binary[crossover_point:]
-    individual_2.cross_population = individual_2.child_binary
 
 
 def mutation_of_individuals(individuals, probability_of_mutation):
     for individual in individuals:
         individual.mutant_population = individual.cross_population
         for i in range(0, len(individual.mutant_population)):
-            if(random.random() < probability_of_mutation):
+            if random.random() <= probability_of_mutation:
                 individual.mutant_population = individual.mutant_population[:i] + (
                     str(1 - int(individual.mutant_population[i]))) + individual.mutant_population[i+1:]
                 if individual.mutation_points:

@@ -75,12 +75,11 @@ def crossover(request):
         probability_of_mutation = Decimal(
         request.POST['probability_of_mutation'])
 
-        
         power = modules.power_of_2(range_a, range_b, precision)
+        
         individuals = modules.get_individuals_array(
             range_a, range_b, precision, population, power)
 
-        
         selected_individuals = modules.selection_of_individuals(
             individuals, precision)[1]
         
