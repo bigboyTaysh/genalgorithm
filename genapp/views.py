@@ -122,6 +122,7 @@ def evolution(request):
 
         results = []
         last_generation = generations[-1]
+        data_for_chart =[]
 
         for index in range(0, population):
             if not any(result['real'] == last_generation.individuals[index].real for result in results):
@@ -130,8 +131,12 @@ def evolution(request):
                     'fx': last_generation.individuals[index].fx,
                     'percent': round(sum(individual.real == last_generation.individuals[index].real for individual in last_generation.individuals) / population * 100, 2)})
 
+        for generation in generations:
+            data_for_chart.append({'fmin': generation.fmin, 'favg': generation.favg, 'fmax': generation.fmax})
+
         context = {
-            'last_generation': sorted(results, key=lambda r: r['percent'], reverse=True) 
+            'last_generation': sorted(results, key=lambda r: r['percent'], reverse=True) ,
+            'data_for_chart': data_for_chart
         }
 
         return JsonResponse(context, status=200)
