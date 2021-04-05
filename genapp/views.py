@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.core import serializers
+from django.conf import settings
 import genapp.modules as modules
 from decimal import Decimal
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -10,7 +11,9 @@ from django.template import RequestContext
 import time
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-
+import os
+from django.http import Http404
+from django.shortcuts import redirect
 
 def index(request):
     return render(request, 'genapp/index.html')
@@ -152,3 +155,14 @@ def test(request):
         }
 
         return JsonResponse(context, status=200)
+
+
+def download(request, path):
+    print(os.path.join(settings.STATIC_ROOT, path))
+    file_path = os.path.join(settings.STATIC_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    return redirect('lab05')
