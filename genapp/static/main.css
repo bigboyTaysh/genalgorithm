@@ -20,3 +20,12 @@ form {
     overflow-y: auto;
     border: 1px solid #c2c3c4;
 }
+
+.tab-content>.tab-pane {
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+.tab-content>.tab-pane.active {
+    height: auto;
+}

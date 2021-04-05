@@ -221,6 +221,7 @@ function drawChart() {
 
     const config = {
         type: 'line',
+        position: 'right',
         options: {
             responsive: true,
             maintainAspectRatio: false,
