@@ -168,7 +168,7 @@ def mutation(individuals, mutation_probability):
                     individual.mutation_points += str(i+1)
 
 
-def evolution(range_a, range_b, precision, population_size, generations_number, crossover_probability, mutation_probability):
+def evolution(range_a, range_b, precision, population_size, generations_number, crossover_probability, mutation_probability, elite_number):
     generations = []
     population = []
 
@@ -177,7 +177,8 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
     individuals = get_individuals_array(
         range_a, range_b, precision, population_size, power)
 
-    elite = max(individuals, key=attrgetter('fx'))
+    if elite_number:
+        elite = max(individuals, key=attrgetter('fx'))
 
     selected_individuals = selection_of_individuals(
         individuals, precision)[1]
@@ -193,10 +194,11 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
 
     generation = Generation([], None, None, None)
 
-    if not any(individual.real == elite.real for individual in population):
-        index = random.randrange(0, population_size)
-        if population[index].fx < elite.fx:
-            population[index] = elite
+    if elite_number:
+        if not any(individual.real == elite.real for individual in population):
+            index = random.randrange(0, population_size)
+            if population[index].fx < elite.fx:
+                population[index] = elite
 
     generation.individuals = population
     generation.fmin = min(
@@ -209,7 +211,7 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
 
     for i in range(0, generations_number-1):
         generation = get_generation(generation.individuals, range_a, range_b, precision,
-                                    population_size, power, crossover_probability, mutation_probability)
+                                    population_size, power, crossover_probability, mutation_probability, elite_number)
         generations.append(generation)
 
     with open('staticfiles/generations_history.csv', 'w', newline='', encoding='utf8') as history_csvfile, \
@@ -254,8 +256,9 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
     return generations
 
 
-def get_generation(population, range_a, range_b, precision, population_size, power, crossover_probability, mutation_probability):
-    elite = max(copy(population), key=attrgetter('fx'))
+def get_generation(population, range_a, range_b, precision, population_size, power, crossover_probability, mutation_probability, elite_number):
+    if elite_number:
+        elite = max(copy(population), key=attrgetter('fx'))
 
     selected_individuals = selection_of_individuals(
         population, precision)[1]
@@ -271,10 +274,11 @@ def get_generation(population, range_a, range_b, precision, population_size, pow
         generation.individuals.append(get_individual_from_binary(
             individual.mutant_population, range_a, range_b, precision, power))
 
-    if not any(individual.real == elite.real for individual in generation.individuals):
-        index = random.randrange(0, population_size)
-        if generation.individuals[index].fx < elite.fx:
-            generation.individuals[index] = elite
+    if elite_number:
+        if not any(individual.real == elite.real for individual in generation.individuals):
+            index = random.randrange(0, population_size)
+            if generation.individuals[index].fx < elite.fx:
+                generation.individuals[index] = elite
 
     generation.fmin = min(
         individual.fx for individual in generation.individuals)

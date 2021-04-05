@@ -65,7 +65,18 @@
         <input type="number" name="mutationProbability" class="form-control mutationProbability" value="0.0005">
       </div>
     </div>
-  <br>
+    <br>
+
+    <div class="form-group row">
+      <label for="elite" class="col-sm-3 col-form-label">Ilość elit</label>
+      <div class="col-sm-4 col-lg-2">
+        <select name="elite" class="form-control elite">
+          <option value="1">1</option>
+          <option value="0">0</option>
+        </select>
+      </div>
+    </div>
+    <br>
 
     <input type="button" class="btn btn-outline-dark evolution" value="Generuj">
 </form>
@@ -79,7 +90,7 @@
     <button class="nav-link" id="chart-tab" data-bs-toggle="tab" data-bs-target="#chart" type="button" role="tab" aria-controls="chart" aria-selected="false">Wykres</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Test</button>
+    <button class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab" aria-controls="test" aria-selected="false">Test</button>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -100,8 +111,38 @@
       </table>
     </div>
   </div>
-  <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab" style="height: 600px">
-    <canvas id="myChart"></canvas>
+  <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+    <div style="height: 600px">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test-tab">
+    <form>
+      <div class="form-group row">
+        <label for="testsNumber" class="col-sm-3 col-form-label">Ilość testów</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="testsNumber" class="form-control testsNumber" value="10">
+        </div>
+      </div>
+      <br>
+      <input type="button" class="btn btn-outline-dark test" value="Testuj">
+    </form>
+    <br>
+    <div class="overflow">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Xreal</th>
+            <th scope="col">Xbin</th>
+            <th scope="col">f(x)</th>
+            <th scope="col">%</th>
+          </tr>
+        </thead>
+        <tbody class="tests-results">
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

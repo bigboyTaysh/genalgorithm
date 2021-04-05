@@ -14,6 +14,10 @@ $('.evolution').click(function () {
     evolution();
 })
 
+$('.test').click(function () {
+    test();
+})
+
 chart = drawChart(); 
 
 function start() {
@@ -161,6 +165,7 @@ function evolution() {
     const generations = $(".generations").val()
     const crossoverProbability = $(".crossoverProbability").val()
     const mutationProbability = $(".mutationProbability").val()
+    const elite = $('.elite option:selected').val()
 
     $(".evolution").attr("disabled", "disabled");
     
@@ -176,7 +181,8 @@ function evolution() {
             population: population,
             generations: generations,
             crossover_probability: crossoverProbability,
-            mutation_probability: mutationProbability
+            mutation_probability: mutationProbability,
+            elite: elite
         },
         success: function (results) {
             let html = '';
@@ -196,6 +202,46 @@ function evolution() {
             updateChart(chart, generations, results.data_for_chart);
             $(".results").html(html);
             $(".evolution").removeAttr("disabled");
+        }
+    });
+}
+
+function test() {
+    const csrftoken = getCookie('csrftoken');
+    const testsNumber = $(".testsNumber").val()
+
+    $(".test").attr("disabled", "disabled");
+    
+    $.ajax({
+        url: location.origin + '/test/',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            csrfmiddlewaretoken: csrftoken,
+            tests_number: testsNumber
+        },
+        success: function (results) {
+            /*
+            let html = '';
+
+            results.last_generation.forEach(function (result, index) {
+                let elem =
+                    "<tr> " +
+                    "<th scope='row'>" + (index + 1) + "</th>" +
+                    "<td>" + result.real + "</td>" +
+                    "<td>" + result.bin + "</td>" +
+                    "<td>" + result.fx + "</td>" +
+                    "<td>" + result.percent + "</td>" +
+                    "</tr>"
+                html += elem;
+            });
+
+            updateChart(chart, generations, results.data_for_chart);
+            $(".results").html(html);
+            */
+            
+            console.log(results)
+            $(".test").removeAttr("disabled");
         }
     });
 }

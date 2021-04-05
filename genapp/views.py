@@ -117,8 +117,9 @@ def evolution(request):
         crossover_probability = Decimal(request.POST['crossover_probability'])
         mutation_probability = Decimal(
             request.POST['mutation_probability'])
+        elite_number = int(request.POST['elite'])
 
-        generations = modules.evolution(range_a, range_b, precision, population, generations_number, crossover_probability, mutation_probability)
+        generations = modules.evolution(range_a, range_b, precision, population, generations_number, crossover_probability, mutation_probability, elite_number)
 
         results = []
         last_generation = generations[-1]
@@ -137,6 +138,17 @@ def evolution(request):
         context = {
             'last_generation': sorted(results, key=lambda r: r['percent'], reverse=True) ,
             'data_for_chart': data_for_chart
+        }
+
+        return JsonResponse(context, status=200)
+
+
+def test(request):
+    if request.is_ajax and request.method == "POST":
+        tests_number = int(request.POST['tests_number'])
+
+        context = {
+            'test': tests_number    
         }
 
         return JsonResponse(context, status=200)
