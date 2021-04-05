@@ -10,6 +10,7 @@ import numpy as np
 import time
 import ujson
 import _pickle as cPickle
+import csv
 
 logger = logging.getLogger(__name__)
 
@@ -208,6 +209,25 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
                                       population_size, power, crossover_probability, mutation_probability)
         generations.append(generation)
     
+    with open('staticfiles/generations_history.csv', 'w', newline='', encoding='utf8') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';', dialect=csv.excel)
+        writer.writerow(['Parametry'])
+        writer.writerow(['Precyzja: 10^-%d' % precision])
+        writer.writerow(['Populacja: %d' % population_size])
+        writer.writerow(['Pokolenia: %d' % generations_number])
+        writer.writerow(['P. krzyzowania: %g%%' % (crossover_probability*100)])
+        writer.writerow(['P. mutacji: %g%%' % (mutation_probability*100)])
+        
+        for gen_num, generation in enumerate(generations, start=1):
+            writer.writerow(['Pokolenie %d' % gen_num])
+            writer.writerow(['','Xreal', 'Xbin', 'f(x)'])
+            
+            for pop_num, individual in enumerate(generation.individuals, start=1):
+                writer.writerow([pop_num, individual.real,  "'%s'" % individual.binary, individual.fx])
+                
+            writer.writerow([])
+
+
     return generations
 
 
