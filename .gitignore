@@ -10,3 +10,4 @@
 
 */__pycache__/
 staticfiles/generations_history.csv
+staticfiles/generations_summary.csv

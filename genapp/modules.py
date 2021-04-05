@@ -199,37 +199,59 @@ def evolution(range_a, range_b, precision, population_size, generations_number, 
             population[index] = elite
 
     generation.individuals = population
-    generation.fmin = min(individual.fx for individual in generation.individuals)
-    generation.fmax = max(individual.fx for individual in generation.individuals)
-    generation.favg = sum(individual.fx for individual in generation.individuals) / population_size
+    generation.fmin = min(
+        individual.fx for individual in generation.individuals)
+    generation.fmax = max(
+        individual.fx for individual in generation.individuals)
+    generation.favg = sum(
+        individual.fx for individual in generation.individuals) / population_size
     generations.append(generation)
 
     for i in range(0, generations_number-1):
         generation = get_generation(generation.individuals, range_a, range_b, precision,
-                                      population_size, power, crossover_probability, mutation_probability)
+                                    population_size, power, crossover_probability, mutation_probability)
         generations.append(generation)
-    
-    with open('staticfiles/generations_history.csv', 'w', newline='', encoding='utf8') as csvfile:
-        writer = csv.writer(csvfile, delimiter=';', dialect=csv.excel)
-        writer.writerow(['Parametry'])
-        writer.writerow(['Precyzja: 10^-%d' % precision])
-        writer.writerow(['Populacja: %d' % population_size])
-        writer.writerow(['Pokolenia: %d' % generations_number])
-        writer.writerow(['P. krzyzowania: %g%%' % (crossover_probability*100)])
-        writer.writerow(['P. mutacji: %g%%' % (mutation_probability*100)])
-        
-        for gen_num, generation in enumerate(generations, start=1):
-            writer.writerow(['Pokolenie %d' % gen_num])
-            writer.writerow(['','Xreal', 'Xbin', 'f(x)'])
-            
-            for pop_num, individual in enumerate(generation.individuals, start=1):
-                writer.writerow([pop_num, individual.real,  "'%s'" % individual.binary, individual.fx])
-                
-            writer.writerow([])
 
+    with open('staticfiles/generations_history.csv', 'w', newline='', encoding='utf8') as history_csvfile, \
+            open('staticfiles/generations_summary.csv', 'w', newline='', encoding='utf8') as summary_csvfile:
+        history_writer = csv.writer(
+            history_csvfile, delimiter=';', dialect=csv.excel)
+        summary_writer = csv.writer(
+            summary_csvfile, delimiter=';', dialect=csv.excel)
+
+        history_writer.writerow(['Parametry'])
+        history_writer.writerow(['Precyzja: 10^-%d' % precision])
+        history_writer.writerow(['Populacja: %d' % population_size])
+        history_writer.writerow(['Pokolenia: %d' % generations_number])
+        history_writer.writerow(
+            ['P. krzyzowania: %g%%' % (crossover_probability*100)])
+        history_writer.writerow(['P. mutacji: %g%%' %
+                                (mutation_probability*100)])
+
+        summary_writer.writerow(['Parametry'])
+        summary_writer.writerow(['Precyzja: 10^-%d' % precision])
+        summary_writer.writerow(['Populacja: %d' % population_size])
+        summary_writer.writerow(['Pokolenia: %d' % generations_number])
+        summary_writer.writerow(
+            ['P. krzyzowania: %g%%' % (crossover_probability*100)])
+        summary_writer.writerow(['P. mutacji: %g%%' %
+                                (mutation_probability*100)])
+        summary_writer.writerow(['Pokolenie', 'fmin', 'favg', 'fmax'])
+
+        for gen_num, generation in enumerate(generations, start=1):
+            summary_writer.writerow(
+                    [gen_num, generation.fmin, generation.favg, generation.fmax])
+
+            history_writer.writerow(['Pokolenie %d' % gen_num])
+            history_writer.writerow(['', 'Xreal', 'Xbin', 'f(x)'])
+
+            for pop_num, individual in enumerate(generation.individuals, start=1):
+                history_writer.writerow(
+                    [pop_num, individual.real,  "'%s'" % individual.binary, individual.fx])
+
+            history_writer.writerow([])
 
     return generations
-
 
 
 def get_generation(population, range_a, range_b, precision, population_size, power, crossover_probability, mutation_probability):
@@ -254,8 +276,11 @@ def get_generation(population, range_a, range_b, precision, population_size, pow
         if generation.individuals[index].fx < elite.fx:
             generation.individuals[index] = elite
 
-    generation.fmin = min(individual.fx for individual in generation.individuals)
-    generation.fmax = max(individual.fx for individual in generation.individuals)
-    generation.favg = sum(individual.fx for individual in generation.individuals) / population_size
+    generation.fmin = min(
+        individual.fx for individual in generation.individuals)
+    generation.fmax = max(
+        individual.fx for individual in generation.individuals)
+    generation.favg = sum(
+        individual.fx for individual in generation.individuals) / population_size
 
     return generation
