@@ -10,6 +10,10 @@ $('.crossover').click(function () {
     crossover();
 })
 
+$('.evolution').click(function () {
+    evolution();
+})
+
 function start() {
     const csrftoken = getCookie('csrftoken');
     const rangeA = $(".rangeA").val()
@@ -103,7 +107,7 @@ function crossover(){
     const precision = $(".precision").val()
     const population = $(".population").val()
     const crossoverProbability = $(".crossoverProbability").val()
-    const probabilityOfMutation = $(".probabilityOfMutation").val()
+    const mutationProbability = $(".mutationProbability").val()
 
     $.ajax({
         url: location.origin + '/crossover/',
@@ -116,7 +120,7 @@ function crossover(){
             precision: precision,
             population: population,
             crossover_probability: crossoverProbability,
-            probability_of_mutation: probabilityOfMutation
+            mutation_probability: mutationProbability
         },
         success: function (results) {
             let html = '';
@@ -141,6 +145,51 @@ function crossover(){
                 html += elem;
             })
 
+            $(".results").html(html);
+        }
+    });
+}
+
+function evolution(){
+    const csrftoken = getCookie('csrftoken');
+    const rangeA = $(".rangeA").val()
+    const rangeB = $(".rangeB").val()
+    const precision = $(".precision").val()
+    const population = $(".population").val()
+    const generations = $(".generations").val()
+    const crossoverProbability = $(".crossoverProbability").val()
+    const mutationProbability = $(".mutationProbability").val()
+
+    $.ajax({
+        url: location.origin + '/evolution/',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            csrfmiddlewaretoken: csrftoken,
+            range_a: rangeA,
+            range_b: rangeB,
+            precision: precision,
+            population: population,
+            generations: generations,
+            crossover_probability: crossoverProbability,
+            mutation_probability: mutationProbability
+        },
+        success: function (results) {
+            let html = '';
+
+            results.last_generation.forEach(function (result, index) {
+                let elem = 
+                "<tr> " +
+                    "<th scope='row'>" + (index + 1) + "</th>" +
+                    "<td>" + result.real + "</td>" + 
+                    "<td>" + result.bin + "</td>" + 
+                    "<td>" + result.fx + "</td>" + 
+                    "<td>" + result.percent + "</td>" + 
+                "</tr>"
+                html += elem;
+            });
+
+            console.log(results)
             $(".results").html(html);
         }
     });

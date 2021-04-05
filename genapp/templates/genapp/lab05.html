@@ -6,7 +6,7 @@
 <link href="{% static 'main.css' %}" rel="stylesheet"></script>
 <link rel="icon" href="{% static 'favicon.ico' %}">
 
-{% include "genapp/nav.html" with active_page='lab04' %}
+{% include "genapp/nav.html" with active_page='lab05' %}
 {% include "genapp/header.html" %}
 
 <h3>Wybierz parametry</h3>
@@ -44,6 +44,14 @@
     <br>
 
     <div class="form-group row">
+        <label for="generations" class="col-sm-3 col-form-label">Ilość pokoleń</label>
+        <div class="col-sm-4 col-lg-2">
+          <input type="number" name="generations" class="form-control generations" value="10">
+        </div>
+    </div>
+    <br>
+
+    <div class="form-group row">
       <label for="crossoverProbability" class="col-sm-3 col-form-label">Prawdopodobieństwo krzyżowania</label>
       <div class="col-sm-4 col-lg-2">
         <input type="number" name="crossoverProbability" class="form-control crossoverProbability" value="0.75">
@@ -59,7 +67,7 @@
     </div>
   <br>
 
-    <input type="button" class="btn btn-outline-dark crossover" value="Generuj">
+    <input type="button" class="btn btn-outline-dark evolution" value="Generuj">
 </form>
 <br>
 
@@ -70,14 +78,8 @@
         <th scope="col">#</th>
         <th scope="col">Xreal</th>
         <th scope="col">Xbin</th>
-        <th scope="col">rodzice</th>
-        <th scope="col">punkty przecięcia</th>
-        <th scope="col">potomstwo</th>
-        <th scope="col">populacja po krzyżowaniu</th>
-        <th scope="col">mutacja genu</th>
-        <th scope="col">potomstwo po mutacji</th>
-        <th scope="col">Xreal</th>
         <th scope="col">f(x)</th>
+        <th scope="col">%</th>
       </tr>
     </thead>
     <tbody class="results">
@@ -87,4 +89,4 @@
 
 
 {% load static %}
-<script src="{% static 'main.js' %}"></script>   
+<script src="{% static 'main.js' %}"></script>

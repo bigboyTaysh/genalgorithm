@@ -23,3 +23,54 @@ class Individual(models.Model):
 
     def __gt__(self, other):
         return self.qx > other
+
+'''    
+    real = 0
+    int_from_real = 0
+    binary = ""
+    int_from_bin = 0
+    real_from_int = 0
+    fx = 0
+    gx = 0
+    px = 0
+    qx = 0
+    is_parent = False
+    crossover_points = ""
+    child_binary = ""
+    cross_population = ""
+    mutation_points = ""
+
+    def __init__(self, real, int_from_real,
+                 binary, int_from_bin, real_from_int, fx,
+                 gx=None, px=None, qx=None, is_parent=None, crossover_points=None,
+                 child_binary=None, cross_population=None, mutation_points=None,
+                 mutant_population=None):
+        self.real = real
+        self.int_from_real = int_from_real
+        self.binary = binary
+        self.int_from_bin = int_from_bin
+        self.real_from_int = real_from_int
+        self.fx = fx
+        self.gx = gx
+        self.px = px
+        self.qx = qx
+        self.is_parent = is_parent
+        self.crossover_points = crossover_points
+        self.child_binary = child_binary
+        self.cross_population = cross_population
+        self.mutation_points = mutation_points
+        self.mutant_population = mutant_population
+
+    def __lt__(self, other):
+        return self.qx < other
+
+    def __gt__(self, other):
+        return self.qx > other
+'''
+
+class Generation(object):
+    def __init__(self, individuals, fmin, favg, fmax):
+        self.individuals = individuals
+        self.fmin = fmin
+        self.favg = favg
+        self.fmax = fmax

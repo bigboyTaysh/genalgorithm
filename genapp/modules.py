@@ -2,7 +2,7 @@ from decimal import Decimal
 import random
 import math
 import logging
-from genapp.models import Individual
+from genapp.models import Individual, Generation
 from operator import attrgetter
 from copy import deepcopy, copy
 import bisect
@@ -103,7 +103,7 @@ def selection_of_individuals(individuals, precision):
         individuals[i].qx = individuals[i].px + individuals[i-1].qx
         individuals[i].px = individuals[i].gx / sum_gx
 
-    randoms = np.random.default_rng().uniform(0,1,len_individuals)
+    randoms = np.random.default_rng().uniform(0, 1, len_individuals)
 
     selected_individuals = []
     for i in range(0, len_individuals):
@@ -113,7 +113,7 @@ def selection_of_individuals(individuals, precision):
     return randoms.tolist(), selected_individuals
 
 
-def crossover(individuals, crossover_probability, range_a, range_b, precision, power):
+def crossover(individuals, crossover_probability):
     parents = []
 
     for individual in individuals:
@@ -153,11 +153,11 @@ def crossover_of_individuals(individual_1, individual_2):
         individual_1.binary[crossover_point:]
 
 
-def mutation_of_individuals(individuals, probability_of_mutation):
+def mutation(individuals, mutation_probability):
     for individual in individuals:
         individual.mutant_population = individual.cross_population
         for i in range(0, len(individual.mutant_population)):
-            if random.random() <= probability_of_mutation:
+            if random.random() <= mutation_probability:
                 individual.mutant_population = individual.mutant_population[:i] + (
                     str(1 - int(individual.mutant_population[i]))) + individual.mutant_population[i+1:]
                 if individual.mutation_points:
@@ -165,3 +165,77 @@ def mutation_of_individuals(individuals, probability_of_mutation):
                     individual.mutation_points += str(i+1)
                 else:
                     individual.mutation_points += str(i+1)
+
+
+def evolution(range_a, range_b, precision, population_size, generations_number, crossover_probability, mutation_probability):
+    generations = []
+    population = []
+
+    power = power_of_2(range_a, range_b, precision)
+
+    individuals = get_individuals_array(
+        range_a, range_b, precision, population_size, power)
+
+    elite = max(individuals, key=attrgetter('fx'))
+
+    selected_individuals = selection_of_individuals(
+        individuals, precision)[1]
+
+    crossover(selected_individuals, crossover_probability)
+
+    mutation(
+        selected_individuals, mutation_probability)
+
+    for individual in selected_individuals:
+        population.append(get_individual_from_binary(
+            individual.mutant_population, range_a, range_b, precision, power))
+
+    generation = Generation([], None, None, None)
+
+    if not any(individual.real == elite.real for individual in population):
+        index = random.randrange(0, population_size)
+        if population[index].fx < elite.fx:
+            population[index] = elite
+
+    generation.individuals = population
+    generation.fmin = min(individual.fx for individual in generation.individuals)
+    generation.fmax = max(individual.fx for individual in generation.individuals)
+    generation.favg = sum(individual.fx for individual in generation.individuals) / population_size
+    generations.append(generation)
+
+    for i in range(0, generations_number-1):
+        generation = get_generation(generation.individuals, range_a, range_b, precision,
+                                      population_size, power, crossover_probability, mutation_probability)
+        generations.append(generation)
+    
+    return generations
+
+
+
+def get_generation(population, range_a, range_b, precision, population_size, power, crossover_probability, mutation_probability):
+    elite = max(copy(population), key=attrgetter('fx'))
+
+    selected_individuals = selection_of_individuals(
+        population, precision)[1]
+
+    crossover(selected_individuals, crossover_probability)
+
+    mutation(
+        selected_individuals, mutation_probability)
+
+    generation = Generation([], None, None, None)
+
+    for individual in selected_individuals:
+        generation.individuals.append(get_individual_from_binary(
+            individual.mutant_population, range_a, range_b, precision, power))
+
+    if not any(individual.real == elite.real for individual in generation.individuals):
+        index = random.randrange(0, population_size)
+        if generation.individuals[index].fx < elite.fx:
+            generation.individuals[index] = elite
+
+    generation.fmin = min(individual.fx for individual in generation.individuals)
+    generation.fmax = max(individual.fx for individual in generation.individuals)
+    generation.favg = sum(individual.fx for individual in generation.individuals) / population_size
+
+    return generation
