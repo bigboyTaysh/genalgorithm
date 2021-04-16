@@ -14,7 +14,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 import os
 from django.http import Http404
 from django.shortcuts import redirect
-import pickle
 
 def index(request):
     return render(request, 'genapp/index.html')
@@ -38,16 +37,17 @@ def lab05(request):
 
 def start(request):
     if request.is_ajax and request.method == "POST":
-        range_a = float(request.POST['range_a'])
-        range_b = float(request.POST['range_b'])
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
 
         power = modules.power_of_2(range_a, range_b, precision)
-        individuals = modules.get_individuals_array(range_a, range_b, precision, population, power)
+
         context = {
             'power': power,
-            'individuals': json.dumps([individual.__dict__ for individual in individuals])
+            'individuals': serializers.serialize("json",
+                                                 modules.get_individuals_array(range_a, range_b, precision, population, power))
         }
 
         return JsonResponse(context, status=200)
@@ -55,20 +55,20 @@ def start(request):
 
 def selection(request):
     if request.is_ajax and request.method == "POST":
-        range_a = float(request.POST['range_a'])
-        range_b = float(request.POST['range_b'])
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
 
         power = modules.power_of_2(range_a, range_b, precision)
         individuals = modules.get_individuals_array(
             range_a, range_b, precision, population, power)
-        selected_individuals = modules.selection_of_individuals(
+        randoms, selected_individuals = modules.selection_of_individuals(
             individuals, precision)
-
         context = {
-            'individuals': json.dumps([individual.__dict__ for individual in individuals]),
-            'selected_individuals': json.dumps([individual.__dict__ for individual in selected_individuals]),
+            'individuals': serializers.serialize("json", individuals),
+            'randoms': randoms,
+            'selected_individuals': serializers.serialize("json", selected_individuals)
         }
 
         return JsonResponse(context, status=200)
@@ -76,12 +76,12 @@ def selection(request):
 
 def crossover(request):
     if request.is_ajax and request.method == "POST":
-        range_a = float(request.POST['range_a'])
-        range_b = float(request.POST['range_b'])
+        range_a = Decimal(request.POST['range_a'])
+        range_b = Decimal(request.POST['range_b'])
         precision = int(request.POST['precision'])
         population = int(request.POST['population'])
-        crossover_probability = float(request.POST['crossover_probability'])
-        mutation_probability = float(
+        crossover_probability = Decimal(request.POST['crossover_probability'])
+        mutation_probability = Decimal(
             request.POST['mutation_probability'])
 
         power = modules.power_of_2(range_a, range_b, precision)
@@ -90,9 +90,9 @@ def crossover(request):
             range_a, range_b, precision, population, power)
 
         selected_individuals = modules.selection_of_individuals(
-            individuals, precision)
+            individuals, precision)[1]
 
-        modules.crossover(selected_individuals, crossover_probability, power)
+        modules.crossover(selected_individuals, crossover_probability)
         modules.mutation(
             selected_individuals, mutation_probability, power)
 
@@ -102,11 +102,9 @@ def crossover(request):
             new_population.append(modules.get_individual_from_binary(
                 individual.mutant_population, range_a, range_b, precision, power))
 
-        print(new_population[0].mutant_population)
-
         context = {
-            'individuals': json.dumps([individual.__dict__ for individual in selected_individuals.tolist()]),
-            'new_population': json.dumps([individual.__dict__ for individual in new_population])
+            'individuals': serializers.serialize("json", selected_individuals),
+            'new_population': serializers.serialize("json", new_population)
         }
 
         return JsonResponse(context, status=200)
@@ -123,11 +121,11 @@ def evolution(request):
         mutation_probability = float(
             request.POST['mutation_probability'])
         elite_number = int(request.POST['elite'])
+        start_time = time.time()
+        generations = modules.evolution(range_a, range_b, precision, population, generations_number, crossover_probability, mutation_probability, elite_number, False)
+        elapsed_time = time.time() - start_time
+        print(elapsed_time)
 
-        start = time.time()
-        generations = modules.evolution(range_a, range_b, precision, population, generations_number, crossover_probability, mutation_probability, elite_number, True)
-        print(time.time() - start)
-         
         results = []
         last_generation = generations[-1]
         data_for_chart =[]
@@ -143,7 +141,7 @@ def evolution(request):
             data_for_chart.append({'fmin': generation.fmin, 'favg': generation.favg, 'fmax': generation.fmax})
 
         context = {
-            'last_generation': sorted(results, key=lambda x: x['percent'], reverse=True),
+            'last_generation': sorted(results, key=lambda r: r['percent'], reverse=True) ,
             'data_for_chart': data_for_chart
         }
 
@@ -155,14 +153,12 @@ def test(request):
         tests_number = int(request.POST['tests_number'])
         precision = int(request.POST['precision'])
 
-        start = time.time()
-        tests_list = sorted(modules.test(tests_number, precision), key=lambda x: (x.favg, x.fmax), reverse=True)
+        modules.test(tests_number, precision)
 
         context = {
-            'test': json.dumps([test.__dict__ for test in tests_list]),
+            'test': tests_number    
         }
-        print(time.time() - start)
-        
+
         return JsonResponse(context, status=200)
 
 

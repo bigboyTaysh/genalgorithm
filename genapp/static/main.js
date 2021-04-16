@@ -47,12 +47,12 @@ function start() {
                 let elem =
                     "<tr> " +
                     "<th scope='row'>" + (index + 1) + "</th>" +
-                    "<td>" + result.fields.real + "</td>" +
-                    "<td>" + result.fields.int_from_real + "</td>" +
-                    "<td>" + result.fields.binary + "</td>" +
-                    "<td>" + result.fields.int_from_bin + "</td>" +
-                    "<td>" + result.fields.real_from_int + "</td>" +
-                    "<td>" + result.fields.fx + "</td>" +
+                    "<td>" + result.real + "</td>" +
+                    "<td>" + result.int_from_real + "</td>" +
+                    "<td>" + result.binary + "</td>" +
+                    "<td>" + result.int_from_bin + "</td>" +
+                    "<td>" + result.real_from_int + "</td>" +
+                    "<td>" + result.fx + "</td>" +
                     "</tr>"
 
                 html += elem;
@@ -89,13 +89,13 @@ function selection() {
                 let elem =
                     "<tr> " +
                     "<th scope='row'>" + (index + 1) + "</th>" +
-                    "<td>" + result.fields.real + "</td>" +
-                    "<td>" + result.fields.fx + "</td>" +
-                    "<td>" + result.fields.gx + "</td>" +
-                    "<td>" + result.fields.px + "</td>" +
-                    "<td>" + result.fields.qx + "</td>" +
-                    "<td class='border-start'>" + results.randoms[index] + "</td>" +
-                    "<td>" + selected[index].fields.real + "</td>" +
+                    "<td>" + result.real + "</td>" +
+                    "<td>" + result.fx + "</td>" +
+                    "<td>" + result.gx + "</td>" +
+                    "<td>" + result.px + "</td>" +
+                    "<td>" + result.qx + "</td>" +
+                    "<td class='border-start'>" + result.random + "</td>" +
+                    "<td>" + selected[index].real + "</td>" +
                     "</tr>"
 
                 html += elem;
@@ -136,16 +136,16 @@ function crossover() {
                 let elem =
                     "<tr> " +
                     "<th scope='row'>" + (index + 1) + "</th>" +
-                    "<td>" + result.fields.real + "</td>" +
-                    "<td>" + result.fields.binary + "</td>" +
-                    "<td>" + (result.fields.is_parent === true ? result.fields.binary : "------") + "</td>" +
-                    "<td>" + (result.fields.crossover_points != "" ? result.fields.crossover_points : "--") + "</td>" +
-                    "<td>" + (result.fields.child_binary != "" ? result.fields.child_binary : "------") + "</td>" +
-                    "<td>" + result.fields.cross_population + "</td>" +
-                    "<td>" + result.fields.mutation_points + "</td>" +
-                    "<td>" + result.fields.mutant_population + "</td>" +
-                    "<td>" + newPopulation[index].fields.real + "</td>" +
-                    "<td>" + newPopulation[index].fields.fx + "</td>" +
+                    "<td>" + result.real + "</td>" +
+                    "<td>" + result.binary + "</td>" +
+                    "<td>" + (result.is_parent === true ? result.binary : "------") + "</td>" +
+                    "<td>" + (result.crossover_points != "" ? result.crossover_points : "--") + "</td>" +
+                    "<td>" + (result.child_binary != null ? result.child_binary : "------") + "</td>" +
+                    "<td>" + result.cross_population + "</td>" +
+                    "<td>" + result.mutation_points + "</td>" +
+                    "<td>" + result.mutant_population + "</td>" +
+                    "<td>" + newPopulation[index].real + "</td>" +
+                    "<td>" + newPopulation[index].fx + "</td>" +
                     "</tr>"
 
                 html += elem;
@@ -209,8 +209,11 @@ function evolution() {
 function test() {
     const csrftoken = getCookie('csrftoken');
     const testsNumber = $(".testsNumber").val()
+    const precision = $(".testPrecision").val()
 
     $(".test").attr("disabled", "disabled");
+
+    $(".tests-results").html('<tr><td colspan="7"><div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div></td></tr>')
     
     $.ajax({
         url: location.origin + '/test/',
@@ -218,29 +221,26 @@ function test() {
         dataType: 'json',
         data: {
             csrfmiddlewaretoken: csrftoken,
-            tests_number: testsNumber
+            tests_number: testsNumber,
+            precision: precision
         },
         success: function (results) {
-            /*
             let html = '';
-
-            results.last_generation.forEach(function (result, index) {
+            JSON.parse(results.test).forEach(function (result, index) {
                 let elem =
                     "<tr> " +
                     "<th scope='row'>" + (index + 1) + "</th>" +
-                    "<td>" + result.real + "</td>" +
-                    "<td>" + result.bin + "</td>" +
-                    "<td>" + result.fx + "</td>" +
-                    "<td>" + result.percent + "</td>" +
+                    "<td>" + result.population_size + "</td>" +
+                    "<td>" + result.generations_number + "</td>" +
+                    "<td>" + result.crossover_probability + "</td>" +
+                    "<td>" + result.mutation_probability + "</td>" +
+                    "<td>" + result.fmax + "</td>" +
+                    "<td>" + result.favg + "</td>" +
                     "</tr>"
                 html += elem;
             });
 
-            updateChart(chart, generations, results.data_for_chart);
-            $(".results").html(html);
-            */
-            
-            console.log(results)
+            $(".tests-results").html(html);
             $(".test").removeAttr("disabled");
         }
     });
