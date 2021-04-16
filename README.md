@@ -1,2 +1,2 @@
 # Genetic algorithm
-**python, django, js** 
+**python, numpy, django, js** 
