@@ -1,43 +1,4 @@
 class Individual:
-    '''
-    real = models.DecimalField(max_digits=30, decimal_places=20)
-    int_from_real = models.IntegerField()
-    binary = models.CharField(max_length=30)
-    int_from_bin = models.IntegerField()
-    real_from_int = models.DecimalField(max_digits=30, decimal_places=20)
-    fx = models.DecimalField(max_digits=30, decimal_places=20)
-    gx = models.DecimalField(max_digits=30, decimal_places=20)
-    px = models.DecimalField(max_digits=30, decimal_places=20)
-    qx = models.DecimalField(max_digits=30, decimal_places=20)
-    is_parent = models.BooleanField()
-    crossover_points = models.CharField(max_length=200)
-    child_binary = models.CharField(max_length=30)
-    cross_population = models.CharField(max_length=30)
-    mutation_points = models.CharField(max_length=30)
-    mutant_population = models.CharField(max_length=30)
-
-    def __lt__(self, other):
-        return self.qx < other
-
-    def __gt__(self, other):
-        return self.qx > other
-
-
-    real = 0
-    int_from_real = 0
-    binary = ""
-    int_from_bin = 0
-    real_from_int = 0
-    fx = 0
-    gx = 0
-    px = 0
-    qx = 0
-    is_parent = False
-    crossover_points = ""
-    child_binary = ""
-    cross_population = ""
-    mutation_points = ""
-'''  
     def __init__(self, real, int_from_real,
                  binary, int_from_bin, real_from_int, fx,
                  gx=None, px=None, qx=None, random=None, is_parent=False, crossover_points="",

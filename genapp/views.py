@@ -124,9 +124,7 @@ def evolution(request):
             request.POST['mutation_probability'])
         elite_number = int(request.POST['elite'])
 
-        start = time.time()
         generations = modules.evolution(range_a, range_b, precision, population, generations_number, crossover_probability, mutation_probability, elite_number, True)
-        print(time.time() - start)
          
         results = []
         last_generation = generations[-1]
@@ -155,13 +153,11 @@ def test(request):
         tests_number = int(request.POST['tests_number'])
         precision = int(request.POST['precision'])
 
-        start = time.time()
         tests_list = sorted(modules.test(tests_number, precision), key=lambda x: (x.favg, x.fmax), reverse=True)
 
         context = {
             'test': json.dumps([test.__dict__ for test in tests_list]),
         }
-        print(time.time() - start)
         
         return JsonResponse(context, status=200)
 
